@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'awsbix'
-  s.version     = '0.0.3'
+  s.version     = '0.0.4'
   s.date        = '2015-01-19'
   s.summary     = "add/remove hosts to Zabbix"
   s.description = "automates adding/removing hosts to Zabbix"
@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.executables << 'add-hosts.rb'
   s.homepage    = 'https://github.com/brahman81/awsbix'
   s.license       = 'GPLv3'
-  s.add_runtime_dependency "aws-sdk", "~> 1.38"
+  s.required_ruby_version = '>= 1.9.2'
+  s.add_runtime_dependency "aws-sdk", "~> 1.60"
   s.add_runtime_dependency "zabbixapi", "~> 2.2"
 end
