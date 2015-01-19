@@ -1,0 +1,19 @@
+log_level: 'debug'
+
+zbx_url: 'http://localhost/zabbix/api_jsonrpc.php'
+zbx_username: 'Admin'
+zbx_password: 'zabbix'
+# zbx_filter_model either include or exclude host based on the security group
+zbx_filter_model: 'include'
+zbx_include_security_group:
+    - 'only-this-security-group'
+zbx_exclude_security_group:
+    - 'do-not-use-this-security-group'
+zbx_default_templates:
+    - 'Template OS Linux'
+
+aws_access_key: 'AWSACCESSKEY'
+aws_secret_key: 'aws+secret+key'
+aws_regions:
+    - 'eu-west-1'
+aws_dns_suffix: '.internal.aws.dns.suffix.com'
