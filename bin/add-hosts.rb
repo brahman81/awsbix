@@ -34,8 +34,8 @@ awsbix = Awsbix.new(config)
 # connect to host defined in config.yaml
 awsbix.zbx_connect()
 
-# process hosts
-awsbix.aws_get_hosts().each do |host|
+# process hosts, if no :regex or :filter mode is provided defaults to include all hosts in AWS account
+awsbix.aws_get_hosts(:regex => %r{security_group_to_match},:filter => 'include').each do |host|
     host.security_groups.each do | sg |
         awsbix.zbx_process_host(
             :hostname   => host.tags['Name'],
