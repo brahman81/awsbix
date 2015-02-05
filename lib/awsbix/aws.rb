@@ -44,16 +44,13 @@ class Awsbix
         end
 
         # retrieve non-excluded and running EC2 hosts
-        def aws_get_hosts()
+        # {:filter => 'exclude|include', :regex => %r{}}
+        def aws_get_hosts(options = {})
+            # if no filter mode is provided default to 'include' 
+            options[:filter] ||= 'include'
+            # if no regex is provided default to '.*' 
+            options[:regex] ||= %r{.*}
             @ec2_hosts = Array.new
-
-            # get sg to ignore or process based on zbx_filter_model
-            case self.get_conf('zbx_filter_model')
-                when 'exclude'
-                    excluded_security_groups = self.get_conf('zbx_exclude_security_group')
-                when 'include'
-                    included_security_groups = self.get_conf('zbx_include_security_group')
-            end
 
             self.ec2_connect()
             # loop through all hosts, across all regions in config
@@ -63,23 +60,25 @@ class Awsbix
                     @ec2.regions[region].instances.each do | inst |
                         if inst.status.match(/running/) then
                             inst.security_groups.each do | sg |
-                                case self.get_conf('zbx_filter_model')
-                                    when 'exclude'
-                                        # do not process if sg is excluded
-                                        unless excluded_security_groups.include?(sg.name) then
-                                            # do not push if already present
-                                            unless @ec2_hosts.include?(inst) then
-                                                @ec2_hosts.push(inst)
+                                if options[:regex].is_a?(Regexp) then
+                                    case options[:filter]
+                                        when 'exclude'
+                                            # do not process if sg is excluded
+                                            unless sg.name.match(options[:regex]) then
+                                                # do not push if already present
+                                                unless @ec2_hosts.include?(inst) then
+                                                    @ec2_hosts.push(inst)
+                                                end
                                             end
-                                        end
-                                    when 'include'
-                                        # process if sg is included
-                                        if included_security_groups.include?(sg.name) then
-                                            # do not push if already present
-                                            unless @ec2_hosts.include?(inst) then
-                                                @ec2_hosts.push(inst)
+                                        when 'include'
+                                            # process if sg is included
+                                            if sg.name.match(options[:regex]) then
+                                                # do not push if already present
+                                                unless @ec2_hosts.include?(inst) then
+                                                    @ec2_hosts.push(inst)
+                                                end
                                             end
-                                        end
+                                    end
                                 end
                             end
                         end
