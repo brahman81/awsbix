@@ -115,6 +115,32 @@ class Awsbix
             end
         end
 
+        def zbx_enable_host(hostname)
+            # append hostname suffix if one is configured
+            if self.get_conf('aws_dns_suffix') then
+                self.debug_print("debug: appending #{self.get_conf('aws_dns_suffix')} to #{options[:hostname]}")
+                hostname = hostname + self.get_conf('aws_dns_suffix')
+            end
+
+            @zbx.hosts.update(
+                :hostid => @zbx.hosts.get_id(:host => hostname),
+                :status => 0
+            )
+        end
+
+        def zbx_disable_host(hostname)
+            # append hostname suffix if one is configured
+            if self.get_conf('aws_dns_suffix') then
+                self.debug_print("debug: appending #{self.get_conf('aws_dns_suffix')} to #{options[:hostname]}")
+                hostname = hostname + self.get_conf('aws_dns_suffix')
+            end
+
+            @zbx.hosts.update(
+                :hostid => @zbx.hosts.get_id(:host => hostname),
+                :status => 1
+            )
+        end
+
         def zbx_process_host(options = {})
             unless options[:hostname] and options[:group] and options[:port] and options[:ip] and options[:dns] and options[:useip] then
                 puts "error: not enough parameters"

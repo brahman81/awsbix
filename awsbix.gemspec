@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'awsbix'
-  s.version     = '0.0.5'
-  s.date        = '2015-01-19'
+  s.version     = '0.0.6'
+  s.date        = '2017-01-09'
   s.summary     = "add/remove hosts to Zabbix"
   s.description = "automates adding/removing hosts to Zabbix"
   s.authors     = ["Tom Llewellyn-Smith"]

@@ -50,6 +50,8 @@ class Awsbix
             options[:filter] ||= 'include'
             # if no regex is provided default to '.*' 
             options[:regex] ||= %r{.*}
+            # instance_status defaults to 'running' 
+            options[:instance_status] ||= 'running'
             @ec2_hosts = Array.new
 
             self.ec2_connect()
@@ -58,7 +60,7 @@ class Awsbix
                 self.debug_print("info: processing #{region}")
                 AWS.memoize do
                     @ec2.regions[region].instances.each do | inst |
-                        if inst.status.match(/running/) then
+                        if inst.status.match(/options[:instance_status]/) then
                             inst.security_groups.each do | sg |
                                 if options[:regex].is_a?(Regexp) then
                                     case options[:filter]
