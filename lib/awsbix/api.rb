@@ -118,7 +118,7 @@ class Awsbix
         def zbx_enable_host(hostname)
             # append hostname suffix if one is configured
             if self.get_conf('aws_dns_suffix') then
-                self.debug_print("debug: appending #{self.get_conf('aws_dns_suffix')} to #{options[:hostname]}")
+                self.debug_print("debug: appending #{self.get_conf('aws_dns_suffix')} to #{hostname}")
                 hostname = hostname + self.get_conf('aws_dns_suffix')
             end
 
@@ -131,7 +131,7 @@ class Awsbix
         def zbx_disable_host(hostname)
             # append hostname suffix if one is configured
             if self.get_conf('aws_dns_suffix') then
-                self.debug_print("debug: appending #{self.get_conf('aws_dns_suffix')} to #{options[:hostname]}")
+                self.debug_print("debug: appending #{self.get_conf('aws_dns_suffix')} to #{hostname}")
                 hostname = hostname + self.get_conf('aws_dns_suffix')
             end
 
