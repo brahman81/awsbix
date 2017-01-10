@@ -60,7 +60,7 @@ class Awsbix
                 self.debug_print("info: processing #{region}")
                 AWS.memoize do
                     @ec2.regions[region].instances.each do | inst |
-                        if inst.status.match(/options[:instance_status]/) then
+                        if inst.status.match(/#{options[:instance_status]}/) then
                             inst.security_groups.each do | sg |
                                 if options[:regex].is_a?(Regexp) then
                                     case options[:filter]
