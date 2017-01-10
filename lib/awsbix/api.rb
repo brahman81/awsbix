@@ -115,6 +115,10 @@ class Awsbix
             end
         end
 
+        def zbx_get_all_hosts()
+            @zbx_hosts = @zbx.hosts.all
+        end
+
         def zbx_enable_host(hostname)
             # append hostname suffix if one is configured
             if self.get_conf('aws_dns_suffix') then
