@@ -21,11 +21,21 @@ class Awsbix
         require 'zabbixapi'
 
         def zbx_connect()
-            if self.get_conf('zbx_username') and self.get_conf('zbx_password') and self.get_conf('zbx_url') then
+            # if an http auth credential pair are set in the config use them
+            if self.get_conf('zbx_http_user') and self.get_conf('zbx_http_password') and self.get_conf('zbx_username') and self.get_conf('zbx_password') and self.get_conf('zbx_url') then
                 @zbx = ZabbixApi.connect(
-                    :url => self.get_conf('zbx_url'),
-                    :user => self.get_conf('zbx_username'),
-                    :password => self.get_conf('zbx_password')
+                    :url            => self.get_conf('zbx_url'),
+                    :user           => self.get_conf('zbx_username'),
+                    :password       => self.get_conf('zbx_password'),
+                    :http_user      => self.get_conf('zbx_http_user'),
+                    :http_password  => self.get_conf('zbx_http_password')
+                )
+            # fall back to no http auth
+            elsif self.get_conf('zbx_username') and self.get_conf('zbx_password') and self.get_conf('zbx_url') then
+                @zbx = ZabbixApi.connect(
+                    :url            => self.get_conf('zbx_url'),
+                    :user           => self.get_conf('zbx_username'),
+                    :password       => self.get_conf('zbx_password')
                 )
             else
             	raise ErrorZabbixAuthentication
